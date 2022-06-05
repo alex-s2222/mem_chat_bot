@@ -4,16 +4,16 @@ import requests as re
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, callbackcontext
 
-CHAT_ID = '402844537'
 URL = 'https://api.telegram.org/bot'
-API_KEY = 'AIzaSyCBG9WPX4KvEsx1W40ihTjAjtciHn083xA'
+API_KEY = ''
 
 
 def start(update: Update, context: callbackcontext) -> None:
     keyboard = [['/ address', '/number']]
     markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=False)
 
-    update.message.reply_text(f'Привет {update.message.from_user.full_name}. Я хрюшка, потому что повторюшка', reply_markup=markup)
+    update.message.reply_text(f'Привет {update.message.from_user.full_name}.'
+                              f' Я хрюшка, потому что повторюшка', reply_markup=markup)
 
 
 def close_keyboard(update: Update, context: callbackcontext) -> None:
@@ -21,7 +21,7 @@ def close_keyboard(update: Update, context: callbackcontext) -> None:
 
 
 def address(update: Update, context: callbackcontext) -> None:
-    update.message.reply_text('я не ебу где ты живешь -_-, но в будущем я'
+    update.message.reply_text('я не знаю где ты живешь -_-, но в будущем я'
                               'сделаю за тобой слежку(не благодари)')
     update.message.reply_text(f'chat_id{update.message.chat.id}')
 
@@ -39,22 +39,22 @@ def echo(update: Update, context: callbackcontext) -> None:
         update.message.reply_text('Я не могу отвечать на вопросы я только повторбшка :с')
     else:
         for i in update.message.text.split():
-            get_pictures(word=i)
+            get_pictures(CHAT_ID=update.effective_chat.id, word=i)
 
 
-def get_pictures(word) -> None:
+def get_pictures(CHAT_ID, word) -> None:
     GOOGLE_PICTURES = f'https://www.googleapis.com/customsearch/v1?cx=448c512f7ed8a5a3d&key={API_KEY}' \
                  f''f'&lr=lang_ru&searchType=image&q=' + word
     pictures = []
     for img in re.get(GOOGLE_PICTURES).json().get('items'):
         pictures.append(img.get('link'))
 
-    re.get(f'{URL}5349612772:AAGYc8KZUolYZlwHsIAqDPiodR0CnfImnX4/sendPhoto?chat_id={CHAT_ID}&photo={pictures[0]}')
-
+    re.get(f'{URL}5349612772:AAGYc8KZUolYZlwHsIAqDPiodR0CnfImnX4/sendPhoto?'
+           f'chat_id={CHAT_ID}&photo={pictures[0]}')
 
 
 def main() -> None:
-    updater = Updater("5349612772:AAGYc8KZUolYZlwHsIAqDPiodR0CnfImnX4")
+    updater = Updater("TOKEN")
     dispatcher = updater.dispatcher
 
     dispatcher.add_handler(CommandHandler("start", start))
