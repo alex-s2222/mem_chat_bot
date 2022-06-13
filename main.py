@@ -5,17 +5,17 @@ from loguru import logger
 import requests as re
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, callbackcontext
-from moviepy.editor import ImageClip, concatenate_videoclips, VideoFileClip
+from moviepy.editor import ImageClip, concatenate_videoclips, VideoFileClip, ImageSequenceClip, CompositeVideoClip
 import numpy as np
 import cv2
 import io
 import os
 
 URL = 'https://api.telegram.org/bot'
-API_KEY =
+API_KEY = 'AIzaSyCBG9WPX4KvEsx1W40ihTjAjtciHn083xA'
 
 
-bot = telegram.Bot()
+bot = telegram.Bot("5349612772:AAGYc8KZUolYZlwHsIAqDPiodR0CnfImnX4")
 
 
 def start(update: Update, context: callbackcontext) -> None:
@@ -57,21 +57,10 @@ def echo(update: Update, context: callbackcontext) -> None:
     for i in db_images:
         clips.append(ImageClip(i).set_duration(2))
 
-    final_clip = concatenate_videoclips([clips[0], clips[1]], method='compose')
+    final_clip = concatenate_videoclips(clips, method='compose')
     final_clip.write_videofile('test_py.mp4', fps=30)
 
     bot.send_animation(update.message.chat_id, open('test_py.mp4', 'rb'))
-
-
-# def get_pictures(CHAT_ID, word) -> None:
-#     GOOGLE_PICTURES = f'https://www.googleapis.com/customsearch/v1?cx=448c512f7ed8a5a3d&key={API_KEY}' \
-#                  f''f'&lr=lang_ru&searchType=image&q=' + word
-#     pictures = []
-#     for img in re.get(GOOGLE_PICTURES).json().get('items'):
-#         pictures.append(img.get('link'))
-#
-#     re.get(f'{URL}5349612772:AAGYc8KZUolYZlwHsIAqDPiodR0CnfImnX4/sendPhoto?'
-#            f'chat_id={CHAT_ID}&photo={pictures[0]}')
 
 
 def get_pictures(word) -> list:
@@ -92,7 +81,7 @@ def get_pictures(word) -> list:
 
 
 def main() -> None:
-    updater = Updater()
+    updater = Updater("5349612772:AAGYc8KZUolYZlwHsIAqDPiodR0CnfImnX4")
     dispatcher = updater.dispatcher
 
     dispatcher.add_handler(CommandHandler("start", start))
