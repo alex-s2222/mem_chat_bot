@@ -15,7 +15,7 @@ URL = 'https://api.telegram.org/bot'
 API_KEY = 'AIzaSyCBG9WPX4KvEsx1W40ihTjAjtciHn083xA'
 
 
-bot = telegram.Bot("5349612772:AAGYc8KZUolYZlwHsIAqDPiodR0CnfImnX4")
+bot = telegram.Bot(TOKEN)
 
 
 def start(update: Update, context: callbackcontext) -> None:
